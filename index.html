@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Minions RPG Game</title>
+  <!-- BOOTSTRAP  -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery.js"></script>
+
+</head>
+
+<body>
+
+  <header class="jumbotron jumbotron-fluid text-center bg-info text-white"> 
+    <div class="container">
+      <h1>Minions RPG Game!</h1>
+      
+      <p class="font-weight-light">
+        You will given a random number at the start of the game.<br>
+      </p>
+      
+    </div>
+  </header>
+
+  <section class="container text-center">
+
+    <div class="row row_1 mb-3"></div>
+
+    <div class="row">
+
+      <div class="col-3">
+        <div class="card">
+          <div class="card-header text-info font-weight-bold">Wins</div>
+          <h2 id="wins" class="text-warning"> 0 </h2>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="card">
+          <div class="card-header text-info font-weight-bold">losses</div>
+          <h2 id="losses" class="text-warning"> 0 </h2>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="card ">
+          <div class="card-header font-weight-bold">
+            Matching to 
+          </div>
+          <h1 id="computer_score"> 0 </h1>
+        </div>
+      </div>
+ 
+      <div class="col-3">
+        <div class="card">
+          <div class="card-header bg-info text-white">
+            Your Score
+          </div>
+          <h1 id="userSum" class="text-info">0</h1>
+        </div>   
+      </div>
+
+     
+    </div><!--row 1 end-->  
+
+    
+  
+  </section>
+
+
+  <script type="text/javascript" src="assets/JS/myJS.js"></script>
+
+</body>
+
+</html>
