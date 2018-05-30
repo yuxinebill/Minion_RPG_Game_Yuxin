@@ -1,186 +1,163 @@
 $(document).ready(function() {
 
-//设立一个ARRAY 包括4个OBJECT，每个人物都有攻击能力，防御能力，以及血条
+	var minions = [
 
-//如果USER选择一个任务，那么就将这个人物从ARRAY里独立出来作为“我”，名字的按钮消失，攻击的按钮出现。
-//然后名字TITLE 出现在在人物上方
+	{	name	: "Bob",
+		life	: 50,
+		attack	: 5,
+		defence	: 2
+	},
 
-//如果USER选择一个敌人，那么另外两个人物消失，这个人物成为唯一的敌人，名字的按钮也消失
+	{	name	: "Stuart",
+		life	: 30,
+		attack	: 9,
+		defence	: 4
+	},
 
-//点击攻击的按钮，那么我的攻击数=攻击能力*攻击次数
-//那么敌人的血条=敌人的血条-我的攻击数+敌人防御能力，我的血条=我的血条-敌人的攻击数+我的防御能力
-
-//当我的血条>0的时候并且敌人的血条<0 那么我就赢了
-//当我的血条<0的时候并且敌人的血条>0，那么我就输了
-
-
-var minions = [
-
-{	name	: "Bob",
-	life	: 50,
-	attack	: 5,
-	defence	: 2
-},
-
-{	name	: "Stuart",
-	life	: 30,
-	attack	: 9,
-	defence	: 4
-},
-
-{	name	: "Kevin",
-	life	: 45,
-	attack	: 6,
-	defence	: 10	
-},
+	{	name	: "Kevin",
+		life	: 45,
+		attack	: 8,
+		defence	: 6	
+	},
 
 
-{	name	: "Kuku",
-	life	: 35,
-	attack	: 7,
-	defence	: 12,
-}];
+	{	name	: "Kuku",
+		life	: 35,
+		attack	: 12,
+		defence	: 7,
+	}];
 
-var newMinions = minions;
-var myCharacter = [];
-var enemy = [];
+	var newMinions = minions;
+	var myCharacter = [];
+	var enemy = [];
 
-//writing html
-function getCharactorsOnScreen () {
-	for (i=0; i<newMinions.length; i++) {
-		$("<div>").addClass("col-3").attr('id', newMinions[i].name).appendTo($(".row_1"));
-		$("<div>").addClass("card").attr('id', "card" + newMinions[i].name).appendTo("#" + newMinions[i].name);
-		$("<img>").attr("src", "assets/imgs/" + newMinions[i].name +".jpg").addClass("card-img-top").appendTo("#" + "card" + newMinions[i].name);
-		$("<div>").addClass("card-body").append($("<button>")).addClass("btn btn-info").text(newMinions[i].name).appendTo("#" + "card" + newMinions[i].name);
-	}
-	
-}
+	//writing html
+	function getCharactorsOnScreen () {
+		for (i=0; i<newMinions.length; i++) {
+			$("<div>").addClass("col-3").attr('id', newMinions[i].name).appendTo($(".row_1"));
+			$("<div>").addClass("card").attr('id', "card" + newMinions[i].name).appendTo("#" + newMinions[i].name);
+			$("<img>").attr("src", "assets/imgs/" + newMinions[i].name +".jpg").addClass("card-img-top").appendTo("#" + "card" + newMinions[i].name);
+			$("<div>").addClass("card-body").append($("<button>")).addClass("btn btn-info").text(newMinions[i].name).appendTo("#" + "card" + newMinions[i].name);
+		};	
+	};
 
-getCharactorsOnScreen();
-
-
-$(".card").one("click", ".btn" , function(){
-	$(this).hide();
-
-	newMinions = [];
-	
-	var myCharacterIndex ;
-
-	for (i=0 ; i<minions.length; i++) {
-		// find out the which charactor the user choose
-		if ($(this).text() ==  minions[i].name) {
-			myCharacterIndex = i;
-		}
-		// push others charactors to enemies
-		if ($(this).text() !==  minions[i].name) {
-			newMinions.push(minions[i]);
-		}
-	}
-
-	myCharacter = minions[myCharacterIndex]
-	console.log(myCharacter);
-	console.log(newMinions);
-	$(".row_1").empty();
-
-	//put my charactor on screen
-	function myCharactorOnScreen (){
-		$("<div>").addClass("col-3").attr('id', myCharacter.name).appendTo($(".row_1"));
-		$("<div>").addClass("card").attr('id', "card" + myCharacter.name).appendTo("#" + myCharacter.name);
-		$("<img>").attr("src", "assets/imgs/" + myCharacter.name +".jpg").addClass("card-img-top").appendTo("#" + "card" + myCharacter.name);
-		$("<div>").addClass("card-header bg-info text-white").text("I am " + myCharacter.name ).prependTo("#" + "card" + myCharacter.name);
-	}
-
-	myCharactorOnScreen();
-	//put enemies on screen
 	getCharactorsOnScreen();
 
-	//call them Bad Guy. CLICK find out the which enemy the user choose
-	$(".btn").each(function(){
-		$(this).text("Bad Guy " + $(this).text()).removeClass("btn-info").addClass("btn-warning");
-	})
 
-	// CLICK find out the which enemy the user choose
-	$(".card").one("click", ".btn", function(){
+	function game () {
+		$(".card").one("click", ".btn" , function(){
 
-		var enemyCharacterIndex;
-		
-		for (i=0 ; i<newMinions.length; i++) {
-			var k = "Bad Guy " + newMinions[i].name;
-		
-			if ($(this).text() == k){
-				enemyCharacterIndex = i;	
-			} ;
-		};
+			function reset() {
+				$(".row_1").empty();
+				newMinions = minions;
+				myCharacter = [];
+				enemy = [];
+				getCharactorsOnScreen();
+				game();
+			}; 
 
-		enemy = newMinions[enemyCharacterIndex];
-		console.log(enemy);
-		$(".row_1").empty();
+			$(this).hide();
 
-		myCharactorOnScreen();
-		//create attack button
-		$("<div>").addClass("col-6 dataDiv").appendTo($(".row_1")).append($("<button>").text("ATTACK").addClass("btn-info py-3 px-4 text-white attackBtn"));
-		//create class .myAttack to show my attack each time
-		$(".dataDiv").append($("<div>").addClass("myAttack mt-5 font-weight-bold").text("Attack Enemy : 0 Point"));
-		//create class .beAttacked to show enemy attack me each time
-		$(".dataDiv").append($("<div>").addClass("beAttacked mt-3 font-weight-bold").text("Be Attacked by Enemy : 0 Point"));
+			newMinions = [];
+			
+			var myCharacterIndex ;
 
-		function enemyOnScreen (){
-			$("<div>").addClass("col-3").attr('id', enemy.name).appendTo($(".row_1"));
-			$("<div>").addClass("card").attr('id', "card" + enemy.name).appendTo("#" + enemy.name);
-			$("<img>").attr("src", "assets/imgs/" + enemy.name +".jpg").addClass("card-img-top").appendTo("#" + "card" + enemy.name);
-			$("<div>").addClass("card-header bg-warning").text("Bad Guy " + enemy.name ).prependTo("#" + "card" + enemy.name);
-		}
-		enemyOnScreen();
-
-		var attackCounter = 0;
-		var myLife = myCharacter.life;
-		var enemyLife = enemy.life;
-		$(".attackBtn").click(function(){
-			attackCounter = attackCounter + 1;
-
-			var attackEachTime = myCharacter.attack * attackCounter;
-			$(".myAttack").text("Attack Enemy : " + attackEachTime + " Points");
-			$(".beAttacked").text("Be Attacked by Enemy : " + enemy.attack + " Point")
-
-			myLife = myLife - enemy.attack + myCharacter.defence;
-			enemyLife = enemyLife - myCharacter.attack + enemy.defence;
-
-			if ( myLife>0 && enemyLife<0){
-				alert("You Win!")
-			} ;
-
-			if (myLife<0 && enemyLife>0){
-				alert("You Lose!")
+			for (i=0 ; i<minions.length; i++) {
+				// find out the which charactor the user choose
+				if ($(this).text() ==  minions[i].name) {
+					myCharacterIndex = i;
+				};
+				// push others charactors to enemies
+				if ($(this).text() !==  minions[i].name) {
+					newMinions.push(minions[i]);
+				};
 			};
 
-			console.log("my life is" + myLife);
-			console.log("enemy life is " + enemyLife);
-		})
+			myCharacter = minions[myCharacterIndex];
+			console.log(myCharacter);
+			console.log(newMinions);
+			$(".row_1").empty();
 
-		
-	});
+			//put my charactor on screen
+			function myCharactorOnScreen (){
+				$("<div>").addClass("col-3").attr('id', myCharacter.name).appendTo($(".row_1"));
+				$("<div>").addClass("card").attr('id', "card" + myCharacter.name).appendTo("#" + myCharacter.name);
+				$("<img>").attr("src", "assets/imgs/" + myCharacter.name +".jpg").addClass("card-img-top").appendTo("#" + "card" + myCharacter.name);
+				$("<div>").addClass("card-header bg-info text-white").text("I am " + myCharacter.name ).prependTo("#" + "card" + myCharacter.name);
+			};
 
+			myCharactorOnScreen();
+			//put enemies on screen
+			getCharactorsOnScreen();
 
+			//call them Bad Guy. CLICK find out the which enemy the user choose
+			$(".btn").each(function(){
+				$(this).text("Bad Guy " + $(this).text()).removeClass("btn-info").addClass("btn-warning");
+			});
 
-});
+			// CLICK find out the which enemy the user choose
+			$(".card").one("click", ".btn", function(){
 
+				var enemyCharacterIndex;
+				
+				for (i=0 ; i<newMinions.length; i++) {
+					var k = "Bad Guy " + newMinions[i].name;
+				
+					if ($(this).text() == k){
+						enemyCharacterIndex = i;	
+					} ;
+				};
 
+				enemy = newMinions[enemyCharacterIndex];
+				console.log(enemy);
+				$(".row_1").empty();
 
+				myCharactorOnScreen();
+				//create attack button
+				$("<div>").addClass("col-6 dataDiv").appendTo($(".row_1")).append($("<button>").text("ATTACK").addClass("btn-info py-3 px-4 text-white attackBtn"));
+				//create class .myAttack to show my attack each time
+				$(".dataDiv").append($("<div>").addClass("myAttack mt-5 font-weight-bold").text("Attack Enemy : 0 Point"));
+				//create class .beAttacked to show enemy attack me each time
+				$(".dataDiv").append($("<div>").addClass("beAttacked mt-3 font-weight-bold").text("Be Attacked by Enemy : 0 Point"));
 
+				function enemyOnScreen (){
+					$("<div>").addClass("col-3").attr('id', enemy.name).appendTo($(".row_1"));
+					$("<div>").addClass("card").attr('id', "card" + enemy.name).appendTo("#" + enemy.name);
+					$("<img>").attr("src", "assets/imgs/" + enemy.name +".jpg").addClass("card-img-top").appendTo("#" + "card" + enemy.name);
+					$("<div>").addClass("card-header bg-warning").text("Bad Guy " + enemy.name ).prependTo("#" + "card" + enemy.name);
+				};
+				enemyOnScreen();
 
+				var attackCounter = 0;
+				var myLife = myCharacter.life;
+				var enemyLife = enemy.life;
+				$(".attackBtn").click(function(){
+					attackCounter = attackCounter + 1;
 
+					var attackEachTime = myCharacter.attack * attackCounter;
+					$(".myAttack").text("Attack Enemy : " + attackEachTime + " Points");
+					$(".beAttacked").text("Be Attacked by Enemy : " + enemy.attack + " Point")
 
+					myLife = myLife - enemy.attack + myCharacter.defence;
+					enemyLife = enemyLife - myCharacter.attack + enemy.defence;
 
+					if ( myLife>0 && enemyLife<0){
+						alert("You Win!");
+						reset();
+						
+					};
 
+					if (myLife<0 && enemyLife>0){
+						alert("You Lose!");
+						reset();
+						
+					};
 
-
-	
-
-
-
-
-
-
-
-
+					console.log("my life is" + myLife);
+					console.log("enemy life is " + enemyLife);
+				});		
+			});
+		});			
+	};
+	game();
 });
