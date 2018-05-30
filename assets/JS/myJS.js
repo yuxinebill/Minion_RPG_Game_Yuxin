@@ -3,26 +3,26 @@ $(document).ready(function() {
 	var minions = [
 
 	{	name	: "Bob",
-		life	: 50,
+		life	: 40,
 		attack	: 5,
 		defence	: 2
 	},
 
 	{	name	: "Stuart",
-		life	: 30,
+		life	: 20,
 		attack	: 9,
 		defence	: 4
 	},
 
 	{	name	: "Kevin",
-		life	: 45,
+		life	: 35,
 		attack	: 8,
 		defence	: 6	
 	},
 
 
 	{	name	: "Kuku",
-		life	: 35,
+		life	: 25,
 		attack	: 12,
 		defence	: 7,
 	}];
@@ -153,7 +153,7 @@ $(document).ready(function() {
 						
 					};
 
-					console.log("my life is" + myLife);
+					console.log("my life is " + myLife);
 					console.log("enemy life is " + enemyLife);
 				});		
 			});
